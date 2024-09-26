@@ -24,7 +24,7 @@
                     <td>{{item.emission}}</td>
                     <td>{{item.courriers?.length}}</td>
                     <td>
-                        <a [routerLink]="['/bordereaux', item.id]" class="link-primary">Afficher </a>
+                        <a href="#" (click)="openPdfModal(item.id); $event.preventDefault();" class="link-primary">Afficher </a>
                     </td>
                 </tr>
 
