@@ -1,0 +1,60 @@
+<div class="w-100 d-flex flex-column min-vh-100">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mt-5">
+      <h1 class="fs-4">Liste des bordereaux</h1>
+      <a class="link-primary" routerLink="/">Accueil </a>
+    </div>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">N°</th>
+        <th scope="col">Provenance</th>
+        <th scope="col">Destination</th>
+        <th scope="col">Date démission</th>
+        <th scope="col">Nombre de courriers</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (item of bordereaux$; track item.id) {
+          <tr>
+            <th scope="row">{{ item.numero }}</th>
+            <td>{{ item.provenance }}</td>
+            <td>{{ item.destination }}</td>
+            <td>{{ item.emission }}</td>
+            <td>{{ item.courriers?.length }}</td>
+            <td>
+              <button type="button"
+                      (click)="openModal(viewFileModal, item.id)"
+                      class="btn btn-link">
+                Afficher
+              </button>
+            </td>
+          </tr>
+
+        }
+
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- modal section -->
+<ng-template #viewFileModal>
+  
+  <div class="modal-body">
+    <div class="d-flex gap-2 justify-content-end mb-3 align-items-center">
+      <span>Exporter au format </span>
+      <button (click)="export('pdf')" class="border-0 bg-transparent" type="button">
+        <fa-icon [icon]="faFilePdf"></fa-icon>
+      </button>
+
+      <button (click)="export('word')" class="border-0 bg-transparent" type="button">
+        <fa-icon [icon]="faFileWord"></fa-icon>
+      </button>
+    </div>
+    <div id="my-modal-description">
+      <iframe [src]="pdfSrc" height="1000px" width="100%"></iframe>
+    </div>
+  </div>
+</ng-template>
+

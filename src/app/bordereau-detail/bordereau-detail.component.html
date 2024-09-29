@@ -1,0 +1,123 @@
+<div class="w-100 d-flex flex-column min-vh-100" style="font-size: 14px">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mt-5">
+      <h1 class="fs-4">Détail bordereau</h1>
+      <div class="d-flex gap-2 justify-content-end mb-3 align-items-center">
+        <span>Exporter au format </span>
+        <button (click)="export('pdf')" class="border-0 bg-transparent" type="button">
+          <fa-icon [icon]="faFilePdf" size="3x"></fa-icon>
+        </button>
+
+        <button (click)="export('word')" class="border-0 bg-transparent" type="button">
+          <fa-icon [icon]="faFileWord" size="3x"></fa-icon>
+        </button>
+        <a class="link-primary" routerLink="/bordereaux">Annuler </a>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-content-center align-items-center">
+      <div class="">
+        <p class="mb-0">
+                    <span>
+                        <b>Borderau de transmission N°:</b>
+                        <span>{{ bordereau$.numero }}</span>
+                    </span>
+        </p>
+        <p class="mb-0">
+                    <span>
+                        <b>Provenance :</b>
+                        <span>{{ bordereau$.provenance }}</span>
+                    </span>
+        </p>
+        <p class="mb-0">
+                    <span>
+                        <b>Destination :</b>
+                        <span>{{ bordereau$.destination }}</span>
+                    </span>
+        </p>
+
+
+        <p class="d-flex justify-content-between align-content-center align-items-center gap-5">
+                    <span>
+                        <b>Date émission:</b>
+                        <span>
+                            {{ bordereau$.emission | date : "dd /MM/yyyy hh:mm" }}
+                        </span>
+                    </span>
+          <span>
+                        <b>Nombre de courriers:</b>
+                        <span> {{ bordereau$.courriers.length }}</span>
+                    </span>
+        </p>
+      </div>
+    </div>
+
+    @if (bordereau$.courriers) {
+      <table class="table fs-8">
+        <thead>
+        <tr>
+          <th scope="col">N° Courrier</th>
+          <th scope="col">Expéditeur</th>
+          <th scope="col">Objet</th>
+          <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (item of bordereau$.courriers; track item.id) {
+            <tr style="border-top: 2px solid #c4b939">
+              <th scope="row" rowspan="2" class="col-2">{{ item.numeroCourrier }}</th>
+              <td scope="col" class="col-3">{{ item.expediteur }}</td>
+              <td scope="col" class="col-6">{{ item.objetCourrier }}</td>
+              <td scope="col" class="col-1">
+                {{ item.dateEnregCourrier | date : "dd /MM/yyyy" }}
+              </td>
+            </tr>
+            <tr>
+              <td scope="col" colspan="3">
+                <table class="table table-striped fs-8 mt-2">
+                  <thead>
+                  <tr style="background: #9e9e9e; border: 1px solid #111010">
+                    <th scope="col" style="background: #9e9e9e">
+                      Pièce(s) Jointe(s)
+                    </th>
+                    <th scope="col" style="background: #9e9e9e">
+                      N° de dossier(s) souche(s)
+                    </th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of item.pieces; track item.id) {
+                      <tr>
+                        <th scope=" row">
+                                        <span class="d-flex align-items-center align-content-center gap-1">
+                                            <span style="
+                          border: 2px solid #208f18;
+                          padding: 2px;
+                          width: 15px;
+                          display: block;
+                        "></span>{{ item.libelle }}
+                                        </span>
+                        </th>
+                        <td scope="col">
+                                        <span class="d-flex align-items-center align-content-center gap-1">
+                                            <span style="
+                          border: 2px solid #208f18;
+                          padding: 2px;
+                          width: 15px;
+                          display: block;
+                        "></span>{{ item.dossier }}
+                                        </span>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>
