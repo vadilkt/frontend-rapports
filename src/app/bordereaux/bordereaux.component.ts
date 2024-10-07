@@ -5,7 +5,7 @@ import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {BsModalRef, BsModalService} from "ngx-bootstrap/modal";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
-import {faFilePdf, faFileWord} from "@fortawesome/free-solid-svg-icons";
+import {faFilePdf, faFileWord, faFileExcel} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 
 @Component({
@@ -26,6 +26,7 @@ export class BordereauxComponent implements OnInit {
   borderauId: string = "";
   protected readonly faFilePdf = faFilePdf;
   protected readonly faFileWord = faFileWord;
+  protected readonly faFileExcel = faFileExcel;
   private subscription!: Subscription;
 
   constructor(private borderauxService: BorderauxService,
@@ -68,10 +69,42 @@ export class BordereauxComponent implements OnInit {
   }
 
   export(format: string) {
-    this.borderauxService.export(this.borderauId, format).subscribe((data: any) => {
-      let file = new Blob([data], {type: 'application/pdf'});
-      var fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+    // this.borderauxService.export(this.borderauId, format).subscribe((data: any) => {
+    //   let file = new Blob([data], {type: 'application/pdf'});
+    //   var fileURL = URL.createObjectURL(file);
+    //   window.open(fileURL);
+    // });
+    let fileType:string;
+    let fileExtension:string;
+
+    switch(format){
+      case "pdf":
+        fileType="application/pdf";
+        fileExtension=".pdf";  
+        break;
+      case "word":
+        fileType ="application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        fileExtension =".docx";
+        break;
+      case "excel":
+        fileType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        fileExtension=".xlsx";
+        break;
+      default:
+        fileType="application/pdf";
+        fileExtension=".pdf";
+        break;
+    }
+
+    this.borderauxService.export(this.borderauId, format).subscribe((data:any)=>{
+      let file=new Blob([data], {type:fileType});
+      let fileURL= URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href=fileURL;
+      a.download = `bordereau-${this.borderauId}${fileExtension}`;
+      a.click();
+
+      URL.revokeObjectURL(fileURL);
     });
   }
 

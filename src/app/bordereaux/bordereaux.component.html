@@ -44,12 +44,16 @@
   <div class="modal-body">
     <div class="d-flex gap-2 justify-content-end mb-3 align-items-center">
       <span>Exporter au format </span>
-      <button (click)="export('pdf')" class="border-0 bg-transparent" type="button">
+      <button (click)="export('pdf')" class="border-0 bg-transparent" type="button" title="Exporter en fichier Pdf">
         <fa-icon [icon]="faFilePdf"></fa-icon>
       </button>
 
-      <button (click)="export('word')" class="border-0 bg-transparent" type="button">
+      <button (click)="export('word')" class="border-0 bg-transparent" type="button" title="Exporter en fichier Word">
         <fa-icon [icon]="faFileWord"></fa-icon>
+      </button>
+
+      <button (click)="export('excel')" class="border-0 bg-transparent" type="button" title="Exporter en fichier Excel">
+        <fa-icon [icon]="faFileExcel"></fa-icon>
       </button>
     </div>
     <div id="my-modal-description">
